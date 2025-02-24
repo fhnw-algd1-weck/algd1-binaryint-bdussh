@@ -2,14 +2,31 @@ package ch.fhnw.algd1.converters.binary;
 
 public class BinConverter {
 	public static String toString(int x) {
-		// TODO expect x to be in range [-128, 127], return string with 8 binary
-		// digits representing x in 2-complement
-		return "00000000";
+		String s = "";
+		if (x < 0) {
+			x += 128;
+			s += 1;
+		} else {
+			s += 0;
+		}
+
+		for (int i = 6; i >= 0; i--) {
+			s += (x >> i) & 1; // add the (i)th from right bit
+		}
+
+		return s;
 	}
 
 	public static int fromString(String text) {
-		// TODO expect text to contain 8 binary digits, parse to int value in
-		// 2-complement
-		return 0;
+		int result = 0;
+		for (int i = 1; i < 8; i++) {
+			if (text.charAt(i) == '1') {
+				result += (1 << (7 - i));
+			}
+		}
+		if (text.charAt(0) == '1') { 
+			result -= 128;
+		}
+		return result;
 	}
 }
