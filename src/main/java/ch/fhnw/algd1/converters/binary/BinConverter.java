@@ -2,31 +2,20 @@ package ch.fhnw.algd1.converters.binary;
 
 public class BinConverter {
 	public static String toString(int x) {
-		String s = "";
-		if (x < 0) {
-			x += 128;
-			s += 1;
-		} else {
-			s += 0;
+		StringBuilder s = new StringBuilder(); // so a new String will not be created every time a character is appended.
+		for (int i = 7; i >= 0; i--) {
+			s.append(((x >> i) & 1) == 0 ? '0' : '1'); // add the (i)th from right bit
 		}
-
-		for (int i = 6; i >= 0; i--) {
-			s += (x >> i) & 1; // add the (i)th from right bit
-		}
-
-		return s;
+		return s.toString();
 	}
 
 	public static int fromString(String text) {
 		int result = 0;
-		for (int i = 1; i < 8; i++) {
-			if (text.charAt(i) == '1') {
-				result += (1 << (7 - i));
+		for (int i = 0; i < text.length(); i++) {
+			if(text.charAt(i) == '1') {
+				result |= (1 << (text.length() - 1 - i));
 			}
 		}
-		if (text.charAt(0) == '1') { 
-			result -= 128;
-		}
-		return result;
+		return (byte)result;
 	}
 }
